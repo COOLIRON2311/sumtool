@@ -19,7 +19,7 @@ sumtool <mode> -{algorithm} [file1] [file2 or checksum]
   sha512
 ```
 
-#### Dependancies:
+#### Dependencies:
 ```
 python (>=2)
 hashlib
