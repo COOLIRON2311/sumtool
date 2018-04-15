@@ -19,9 +19,12 @@ sumtool <mode> -{algorithm} [file1] [file2 or checksum]
   sha512
 ```
 
-Dependancies:
-python 2 or 3
+#### Dependancies:
+```
+python (>=2)
 hashlib
+```
 
-Note: For better performance you can try changing 
+#### Note:
+For better performance you can try changing 
 ```#!/usr/bin/env python``` to ```#!/usr/bin/env python3```
