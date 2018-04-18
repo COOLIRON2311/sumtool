@@ -134,7 +134,9 @@ elif os.name == 'nt':
                 exit()
     out('Checking package structure...')
     
-    if not os.path.isfile('.\sumtool'):
+    if not os.path.isfile('.\sumtool') or os.path.isfile('.\sumtool.py'):
+        if os.path.isfile('.\sumtool.py'):
+            os.rename('.\sumtool.py', '.\sumtool')
         time.sleep(1)
         reline()
         out('Checking package structure... Done\n')
@@ -143,10 +145,12 @@ elif os.name == 'nt':
               'The package is either damaged or already installed.')
         exit()
 
-    elif os.path.isfile('.\sumtool'):
+    else:
+        if os.path.isfile('.\sumtool.py'):
+            os.rename('.\sumtool.py', '.\sumtool')
         time.sleep(1)
         reline()
-        out('Checking package structure... Done\n')
+        out('Checking package structure... OK\n')
 
     out('Starting nt install...')
 
@@ -204,5 +208,5 @@ elif os.name == 'nt':
         exit()
     time.sleep(1)
 print('\n------------------------------\nsumtool successfully installed\n------------------------------\n')
-
+time.sleep(2)
 
