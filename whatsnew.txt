@@ -1,0 +1,7 @@
+What's new in 0.4:
+
+ - Added crc32 algorithm.
+ - Added crc32 case configuration (crc_case = 'upper' by default).
+ - Now checksum can be specified before file.
+ - Fixed Windows installation... again (I hope T_T).
+ - Improved unix installation.

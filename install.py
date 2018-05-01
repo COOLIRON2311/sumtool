@@ -4,6 +4,8 @@ import os
 import time
 import sys
 
+__version__ = '0.31'
+
 
 if int(sys.version[:1]) < 3:
     def input(prompt=''):
@@ -26,7 +28,7 @@ reline()
 sys.stdout.write(str('Checking os type... ') + os.name + '\n')
 sys.stdout.flush()
 time.sleep(1)
-
+check = False
 
 if os.name == 'posix':
     out('Checking package structure...')
@@ -66,12 +68,17 @@ if os.name == 'posix':
             time.sleep(1)
             reline()
             out('Installing to /usr/local/bin/... OK\n')
-        except PermissionError:
+            check = True
+        except BaseException:
             time.sleep(1)
             reline()
-            out('Installing to /usr/local/bin/... PermissionError\n')
+            out('Installing to /usr/local/bin/... Error\n')
             time.sleep(1)
-            print('Trying with sudo...')
+            x = input('Try with sudo? (Y/n)')
+            if x == 'n' or x == 'N' or x == 'No' or x == 'no':
+                exit()
+            time.sleep(1)
+            print('Retrying with sudo...')
             os.system('sudo mv ./sumtool /usr/local/bin/')
             if not os.path.isfile('/usr/local/bin/sumtool'):
                 print('\n-------------------\ninstallation failed\n-------------------\n')
@@ -85,12 +92,17 @@ if os.name == 'posix':
             time.sleep(1)
             reline()
             out('Installing to /usr/bin/... OK\n')
-        except PermissionError:
+            check = True
+        except BaseException:
             time.sleep(1)
             reline()
-            out('Installing to /usr/bin/... PermissionError\n')
+            out('Installing to /usr/bin/... Error\n')
             time.sleep(1)
-            print('Trying with sudo...')
+            x = input('Try with sudo? (Y/n)')
+            if x == 'n' or x == 'N' or x == 'No' or x == 'no':
+                exit()
+            time.sleep(1)
+            print('Retrying with sudo...')
             os.system('sudo mv ./sumtool /usr/bin/')
             if not os.path.isfile('/usr/bin/sumtool'):
                 print('\n-------------------\ninstallation failed\n-------------------\n')
@@ -104,12 +116,17 @@ if os.name == 'posix':
             time.sleep(1)
             reline()
             out('Installing to /bin/... OK\n')
-        except PermissionError:
+            check = True
+        except BaseException:
             time.sleep(1)
             reline()
-            out('Installing to /bin/... PermissionError\n')
+            out('Installing to /bin/... Error\n')
             time.sleep(1)
-            print('Trying with sudo...')
+            x = input('Try with sudo? (Y/n)')
+            if x == 'n' or x == 'N' or x == 'No' or x == 'no':
+                exit()
+            time.sleep(1)
+            print('Retrying with sudo...')
             os.system('sudo mv ./sumtool /bin/')
             if not os.path.isfile('/bin/sumtool'):
                 print('\n-------------------\ninstallation failed\n-------------------\n')
@@ -124,33 +141,45 @@ elif os.name == 'nt':
     if not os.path.isdir('C:\Program Files\sumtool'):
         try:
             os.mkdir('C:\Program Files\sumtool')
-        except PermissionError:
+        except:
             if not os.path.isfile('.\install.cmd'):
                 buf = '@echo off\ncd /d %~dp0\npython install.py'
                 f = open('install.cmd', 'w')
                 f.write(buf)
                 f.close()
-                print('You need admin rights for installation!\nYou can do so by running install.cmd as admin.')
-                exit()
+            print('You need admin rights for installation!\nYou can try running install.cmd as admin.')
+            input('\nPress <ENTER> to exit.')
+            exit()
+    elif os.path.isdir('C:\Program Files\sumtool'):
+        try:
+            os.rename('C:\Program Files\sumtool', 'C:\Program Files\sumtool')
+        except:
+            if not os.path.isfile('.\install.cmd'):
+                buf = '@echo off\ncd /d %~dp0\npython install.py'
+                f = open('install.cmd', 'w')
+                f.write(buf)
+                f.close()
+            print('You need admin rights for installation!\nYou can try running install.cmd as admin.')
+            input('\nPress <ENTER> to exit.')
+            exit()
     out('Checking package structure...')
     
-    if not os.path.isfile('.\sumtool') or os.path.isfile('.\sumtool.py'):
+    if os.path.isfile('.\sumtool') or os.path.isfile('.\sumtool.py'):
         if os.path.isfile('.\sumtool.py'):
             os.rename('.\sumtool.py', '.\sumtool')
+        time.sleep(1)
+        reline()
+        out('Checking package structure... OK\n')
+        time.sleep(1)
+    else:
         time.sleep(1)
         reline()
         out('Checking package structure... Done\n')
         time.sleep(1)
         print("Can't find sumtool file in current dir.\n"
               'The package is either damaged or already installed.')
+        input('\nPress <ENTER> to exit.')
         exit()
-
-    else:
-        if os.path.isfile('.\sumtool.py'):
-            os.rename('.\sumtool.py', '.\sumtool')
-        time.sleep(1)
-        reline()
-        out('Checking package structure... OK\n')
 
     out('Starting nt install...')
 
@@ -174,12 +203,17 @@ elif os.name == 'nt':
 
     if not os.path.isdir('C:\Program Files\sumtool'):
         os.mkdir('C:\Program Files\sumtool')
+    if os.path.isfile('C:\Program Files\sumtool\sumtool'):
+        os.remove('C:\Program Files\sumtool\sumtool')
+    if os.path.isfile('C:\Program Files\sumtool\sumtool.cmd'):
+        os.remove('C:\Program Files\sumtool\sumtool.cmd')
     os.rename('.\sumtool', 'C:\Program Files\sumtool\sumtool')
     os.rename('.\sumtool.cmd', 'C:\Program Files\sumtool\sumtool.cmd')
 
     time.sleep(1)
     reline()
     out('Installing to C:\Program Files\sumtool... OK\n')
+    check = True
     time.sleep(1)
     print('Running PATH configuration to finish setup...\n')
     time.sleep(2)
@@ -207,6 +241,8 @@ elif os.name == 'nt':
             print('Unknown option.')
         exit()
     time.sleep(1)
-print('\n------------------------------\nsumtool successfully installed\n------------------------------\n')
+if check:
+    print('\n------------------------------\nsumtool successfully installed\n------------------------------\n')
+else:
+    print('\n-------------------\ninstallation failed\n-------------------\n')
 time.sleep(2)
-
