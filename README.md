@@ -3,7 +3,7 @@ Powerful tool for working with checksums.
 
 ```
 Usage:
-sumtool <mode> -{algorithm} [file1 or checksum1] [file2 or checksum2]
+sumtool <mode> -{algorithm} [file1 or checksum] [file2 or checksum]
 
 <Modes>:
   c    Comparison mode (Compare two files)
