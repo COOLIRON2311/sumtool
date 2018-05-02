@@ -13,7 +13,7 @@ def show_help():
     print('sumtool '+__version__+' by Ivan Ignatenko\n'
           '\n'
           'Usage:\n'
-          'sumtool <mode> -{algorithm} [file1 or checksum1] [file2 or checksum2]\n'
+          'sumtool <mode> -{algorithm} [file1 or checksum] [file2 or checksum]\n'
           '\n'
           '<Modes>:\n'
           '  c    Comparison mode (Compare two files)\n'
